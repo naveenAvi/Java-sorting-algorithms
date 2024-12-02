@@ -70,6 +70,12 @@ public class SortWindow {
 
         VBox newLayout = new VBox(10);
         Button rerunButton = new Button("Re run the test!");
+        rerunButton.setOnAction(e -> 
+        {
+                testNumber++;
+                Map<String, Long> resultsMap = calculateSortTime(csvData,selectedIndex, resultsList );
+                showPie(pieChart,resultsMap );}
+        );
         newLayout.getChildren().addAll(rerunButton, tableNResults);
 
         Scene newScene = new Scene(newLayout, 640, 680);
@@ -77,8 +83,85 @@ public class SortWindow {
 
         newStage.show();
         
+        Map<String, Long> localResultMap = calculateSortTime(csvData,selectedIndex, resultsList );
+        
+        
+        resultsList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                // Get the item that was clicked (if any)
+                if( resultsList.getSelectionModel().getSelectedItem() instanceof Text){
+                    Text selectedItem = resultsList.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    String[] elements = selectedItem.getText().split(": ");
+                    if(elements.length == 2){
+                         ResultNameLabel.setText( " " + String.valueOf(testNumber) + " Test results:");
+                        showPie(pieChart,resultsMapAllResults.get( Integer.parseInt(elements[1] .toString())) );
+                    }
+                }
+                }
+                
+            }
+        });
+        ResultNameLabel.setText("01 Test results:");
+        showPie(pieChart,localResultMap );
+        
+        
     }
+    private Map<String, Long>  calculateSortTime (List<String[]>  csvData, int selectedCOlIndex, ListView resultsLis){
+        double[] columnVals =  getCsvColumn(csvData, selectedCOlIndex);
+        
+         InsertionSort insertionSort = new InsertionSort();         
+         ShellSort shellSort = new ShellSort();
+         HeapSort heapSort = new HeapSort();
+         QuickSort quickSort = new QuickSort();
+         MergeSort  mergeSort = new MergeSort();
 
+            Map<String, Long> results = new HashMap<>();
+            addSortNaming(resultsLis, "Total Elements, test run: " + String.valueOf(testNumber)  );
+            
+            long startTime =  System.nanoTime();
+            double[] sortedArrInserted = insertionSort.SortTheArray(columnVals);
+            long endTime =  System.nanoTime();
+            long Insdiff = endTime - startTime ;
+            addSortResults(resultsLis," Insertion sort", Insdiff);
+            results.put("Insertion sort", Insdiff);
+
+            
+             startTime =  System.nanoTime();
+             sortedArrInserted = shellSort.SortTheArray(columnVals);
+             endTime =  System.nanoTime();
+             Insdiff = endTime - startTime ;
+            addSortResults(resultsLis,  " shell sort", Insdiff);
+            results.put("shell sort", Insdiff);
+            
+            startTime =  System.nanoTime();
+             sortedArrInserted = quickSort.SortTheArray(columnVals);
+             endTime =  System.nanoTime();
+             Insdiff = endTime - startTime ;
+            addSortResults(resultsLis,  " Quick sort", Insdiff);
+            results.put("Quick sort", Insdiff);
+            
+            startTime =  System.nanoTime();
+             sortedArrInserted = heapSort.SortTheArray(columnVals);
+             endTime =  System.nanoTime();
+             Insdiff = endTime - startTime ;
+            addSortResults(resultsLis,  " Heap sort", Insdiff);
+            results.put("Heap sort", Insdiff);
+            
+            startTime =  System.nanoTime();
+             sortedArrInserted = mergeSort.SortTheArray(columnVals);
+             endTime =  System.nanoTime();
+             Insdiff = endTime - startTime ;
+            addSortResults(resultsLis,  " Merge sort", Insdiff);
+            results.put("Merge sort", Insdiff);
+            
+            resultsMap.putAll(results);
+        resultsMapAllResults.put( testNumber , resultsMap);
+            return results;
+    }
+    
+    
     
     private  double[] getCsvColumn(List<String[]>  csvData, int selectedCOlIndex){
         double[] columnData = new double[csvData.size()];
