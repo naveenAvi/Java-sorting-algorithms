@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 /**
- * JavaFX App
+ * JavaFX App update
  */
 public class App extends Application {
     Button btnSort;
