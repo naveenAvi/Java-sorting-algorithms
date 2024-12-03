@@ -35,34 +35,40 @@ import javax.swing.table.DefaultTableModel;
 public class App extends Application {
     Button btnSort;
     TableView  table = new TableView ();
-     List<String[]> csvData = new ArrayList<>();
+    List<String[]> csvData = new ArrayList<>();
 
-             
+
     @Override
     public void start(Stage stage) {
         Button btn = new Button("Upload a csv file");
         FileChooser fileChooser = new FileChooser();
-        
+
         ComboBox cmbBox = new ComboBox();
- 
-        btn.setScaleX(1.2);     
+        cmbBox.getItems().add("Please upload a file");
+
+        btn.setScaleX(1.2);
         btn.setOnAction(e -> {
             File selectedFile = fileChooser.showOpenDialog(stage);
             if (selectedFile != null) {
                 csvData.clear();
                 csvData.addAll(readCSV(selectedFile));
-                
+
                 table.getColumns().clear();
                 table.getItems().clear();
-                
+
                 cmbBox.getItems().clear();
-                
+
                 String[] headers =  csvData.get(0);
                 for (int colIndex = 0; colIndex < headers.length; colIndex++) {
                     TableColumn<ObservableList<String>, String> column = new TableColumn<>(headers[colIndex]);
-                    final int index = colIndex; 
-                    column.setCellValueFactory(cellData -> 
-                        new javafx.beans.property.SimpleStringProperty(cellData.getValue().get(index))
+                    final int index = colIndex;
+                    column.setCellValueFactory(cellData -> {
+                                try{
+                                    return new javafx.beans.property.SimpleStringProperty(cellData.getValue().get(index));
+                                }catch(IndexOutOfBoundsException ex){
+                                    return new javafx.beans.property.SimpleStringProperty("");
+                                }
+                            }
                     );
                     table.getColumns().add(column);
 
@@ -76,50 +82,50 @@ public class App extends Application {
             }
         });
 
-        var label = new Label("Hello, JavaFX " );        
+        var label = new Label("Hello, JavaFX " );
 
-        HBox hbox = new HBox(30);       
+        HBox hbox = new HBox(30);
         VBox  vbox = new VBox();
 
-       hbox.setSpacing(2);
-       hbox.getChildren().addAll(btn, label);
-       hbox.setMargin(btn, new Insets(20, 20, 0, 20)); 
-       hbox.setMargin(label, new Insets(20, 20, 0, 80)); 
-       HBox.setHgrow(label, javafx.scene.layout.Priority.ALWAYS);
-       
+        hbox.setSpacing(2);
+        hbox.getChildren().addAll(btn, label);
+        hbox.setMargin(btn, new Insets(20, 20, 0, 20));
+        hbox.setMargin(label, new Insets(20, 20, 0, 80));
+        HBox.setHgrow(label, javafx.scene.layout.Priority.ALWAYS);
 
-      
-       HBox columnSelectorbox = new HBox();        
-         btnSort = new Button("Sort");
+//new
+
+        HBox columnSelectorbox = new HBox();
+        btnSort = new Button("Sort");
         btnSort.setOnAction(e -> {
             if( csvData.size() < 10 ){
-                    showError( "select a valid csv file", "Please select a valid csv file with more than at least 10 rows(including header rows)!" );
+                showError( "select a valid csv file", "Please select a valid csv file with more than at least 10 rows(including header rows)!" );
             }else if ((cmbBox.getSelectionModel().getSelectedIndex() > 0 )){
-                    
+
                 int validDataCount = 0;
                 for (int i = 0; i < csvData.size()-2; i++) {
                     if( isNumber(csvData.get(i)[cmbBox.getSelectionModel().getSelectedIndex()] ) ){
                         validDataCount++;
                     }
                     if (validDataCount == 10 || i  > 12) {
-                         break;
+                        break;
                     }
                 }
-               if( validDataCount > 9 ){
+                if( validDataCount > 9 ){
                     SortWindow sortWIndow = new SortWindow();
                     sortWIndow.show(csvData,  cmbBox.getSelectionModel().getSelectedIndex());
-               }else{
-                   showError( "invalid column!", "Please select a column with valid numerical data !" );
-               }
-                   
+                }else{
+                    showError( "invalid column!", "Please select a column with valid numerical data !" );
+                }
+
             }else{
-                    showError( "select column to sort", "Please select a column to sort!" );
+                showError( "select column to sort", "Please select a column to sort!" );
             }
         });
-       
+
         columnSelectorbox.getChildren().addAll(cmbBox,btnSort);
-        columnSelectorbox.setMargin(cmbBox, new Insets(20, 20, 20, 20));               
-        columnSelectorbox.setMargin(btnSort, new Insets(20, 20, 0, 20)); 
+        columnSelectorbox.setMargin(cmbBox, new Insets(20, 20, 20, 20));
+        columnSelectorbox.setMargin(btnSort, new Insets(20, 20, 0, 20));
 
 
         vbox.setSpacing(10);
@@ -133,13 +139,13 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-private void showError(String title, String body){
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle(title);
-   alert.setContentText(body );
-    alert.showAndWait().ifPresent(rs -> { });
-}
-private List<String[]> readCSV(File file) {
+    private void showError(String title, String body){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(body );
+        alert.showAndWait().ifPresent(rs -> { });
+    }
+    private List<String[]> readCSV(File file) {
         List<String[]> data = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
@@ -152,12 +158,12 @@ private List<String[]> readCSV(File file) {
         return data;
     }
 
-private boolean isNumber(String number){
-    try {
-        double i = Double.parseDouble(number);
-        return true;
-    } catch (NumberFormatException e) {
-        return false;
+    private boolean isNumber(String number){
+        try {
+            double i = Double.parseDouble(number);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
-}
 }

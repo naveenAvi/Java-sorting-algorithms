@@ -46,7 +46,7 @@ public class SortWindow {
     public void show(List<String[]>  csvData, int selectedIndex) {
         String[] headers =  csvData.get(0);
          TableColumn<ObservableList<String>, String> column = new TableColumn<>(headers[selectedIndex]);
-                    column.setCellValueFactory(cellData -> 
+                    column.setCellValueFactory(cellData ->
                         new javafx.beans.property.SimpleStringProperty(cellData.getValue().get(selectedIndex))
                     );
                     copiedTable.getColumns().add(column);
@@ -123,7 +123,7 @@ public class SortWindow {
             long startTime =  System.nanoTime();
             double[] sortedArrInserted = insertionSort.SortTheArray(columnVals);
             long endTime =  System.nanoTime();
-            long Insdiff = endTime - startTime ;
+            long Insdiff = (endTime - startTime)/1000 ;
             addSortResults(resultsLis," Insertion sort", Insdiff);
             results.put("Insertion sort", Insdiff);
 
@@ -131,28 +131,28 @@ public class SortWindow {
              startTime =  System.nanoTime();
              sortedArrInserted = shellSort.SortTheArray(columnVals);
              endTime =  System.nanoTime();
-             Insdiff = endTime - startTime ;
+             Insdiff =  (endTime - startTime)/1000 ;
             addSortResults(resultsLis,  " shell sort", Insdiff);
             results.put("shell sort", Insdiff);
             
             startTime =  System.nanoTime();
              sortedArrInserted = quickSort.SortTheArray(columnVals);
              endTime =  System.nanoTime();
-             Insdiff = endTime - startTime ;
+             Insdiff =  (endTime - startTime)/1000 ;
             addSortResults(resultsLis,  " Quick sort", Insdiff);
             results.put("Quick sort", Insdiff);
             
             startTime =  System.nanoTime();
              sortedArrInserted = heapSort.SortTheArray(columnVals);
              endTime =  System.nanoTime();
-             Insdiff = endTime - startTime ;
+             Insdiff =  (endTime - startTime)/1000 ;
             addSortResults(resultsLis,  " Heap sort", Insdiff);
             results.put("Heap sort", Insdiff);
             
             startTime =  System.nanoTime();
              sortedArrInserted = mergeSort.SortTheArray(columnVals);
              endTime =  System.nanoTime();
-             Insdiff = endTime - startTime ;
+             Insdiff =  (endTime - startTime)/1000;
             addSortResults(resultsLis,  " Merge sort", Insdiff);
             results.put("Merge sort", Insdiff);
             
@@ -174,9 +174,9 @@ public class SortWindow {
         }
         return columnData;
     }
-    private void addSortResults(ListView resultsList,String algorithm,  long timetaken){
-        long durationInMs = TimeUnit.NANOSECONDS.toMillis(timetaken);
-        resultsList.getItems().add(algorithm + " : " + String.valueOf( timetaken)  );
+    private void addSortResults(ListView resultsList,String algorithm,  double timetaken){
+//        long durationInMs = TimeUnit.NANOSECONDS.toMillis(timetaken);
+        resultsList.getItems().add(algorithm + " : " + String.valueOf( timetaken)+" µs");
     }
     private void addSortNaming(ListView resultsList,String itemText){
         Text text = new Text(itemText);
