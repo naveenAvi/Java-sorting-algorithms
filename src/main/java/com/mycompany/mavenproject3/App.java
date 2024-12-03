@@ -44,6 +44,7 @@ public class App extends Application {
         FileChooser fileChooser = new FileChooser();
         
         ComboBox cmbBox = new ComboBox();
+        cmbBox.getItems().add("Please upload a file");
  
         btn.setScaleX(1.2);     
         btn.setOnAction(e -> {
@@ -61,8 +62,13 @@ public class App extends Application {
                 for (int colIndex = 0; colIndex < headers.length; colIndex++) {
                     TableColumn<ObservableList<String>, String> column = new TableColumn<>(headers[colIndex]);
                     final int index = colIndex; 
-                    column.setCellValueFactory(cellData -> 
-                        new javafx.beans.property.SimpleStringProperty(cellData.getValue().get(index))
+                    column.setCellValueFactory(cellData -> {
+                        try{
+                            return new javafx.beans.property.SimpleStringProperty(cellData.getValue().get(index));
+                        }catch(IndexOutOfBoundsException ex){
+                            return new javafx.beans.property.SimpleStringProperty("");
+                        }
+                            }
                     );
                     table.getColumns().add(column);
 
@@ -87,7 +93,7 @@ public class App extends Application {
        hbox.setMargin(label, new Insets(20, 20, 0, 80)); 
        HBox.setHgrow(label, javafx.scene.layout.Priority.ALWAYS);
        
-
+//new
       
        HBox columnSelectorbox = new HBox();        
          btnSort = new Button("Sort");
