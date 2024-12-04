@@ -13,7 +13,6 @@ public class QuickSort {
         quickSort(arr, 0, arr.length - 1);
         return arr;
     }
-
     private void quickSort(double[] arr, int low, int high) {
         if (low < high) {
             int pi = partition(arr, low, high);
