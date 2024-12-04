@@ -51,7 +51,6 @@ public class MergeSort {
         while (rightIndex < right.length) {
             merged[mergedIndex++] = right[rightIndex++];
         }
-        
         return merged;
     }
 }
