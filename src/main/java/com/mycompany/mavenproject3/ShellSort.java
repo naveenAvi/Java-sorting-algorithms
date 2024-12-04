@@ -9,23 +9,25 @@ package com.mycompany.mavenproject3;
  * @author navee
  */
 public class ShellSort {
-   public double[] SortTheArray(double arr[])
-    {
+    public double[] SortTheArray(double arr[]) {
         int n = arr.length;
-
-        for (int gap = n/2; gap > 0; gap /= 2)
-        {
-            for (int i = gap; i < n; i += 1)
-            {
-                double temp = arr[i];
-
+ 
+        // Start with an initial gap and reduce it by half in each iteration
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+ 
+            // Perform gapped insertion sort for the current gap size
+            for (int i = gap; i < n; i += 1) {
+                double temp = arr[i]; // Temporarily store the current element
+ 
                 int j;
-                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap)
+                // Shift elements to the right to make space for the current element
+                for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
                     arr[j] = arr[j - gap];
-
-                arr[j] = temp;
+                }
+                arr[j] = temp; // Place the current element in its correct position
             }
         }
-        return arr;
+        return arr; // Return the sorted array
     }
-}
+ }
+ 
