@@ -6,7 +6,7 @@ package com.mycompany.mavenproject3;
 
 /**
  *
- * @author navee
+ *
  */
 public class MergeSort {
     public double[] SortTheArray(double[] arr) {

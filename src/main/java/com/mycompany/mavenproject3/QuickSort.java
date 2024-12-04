@@ -6,7 +6,7 @@ package com.mycompany.mavenproject3;
 
 /**
  *
- * @author navee
+ * 
  */
 public class QuickSort {
     public double[] SortTheArray(double[] arr) {
