@@ -6,7 +6,7 @@ package com.mycompany.mavenproject3;
 
 /**
  *
- * @author navee
+ * @author chenuka
  */
 public class HeapSort {
 
