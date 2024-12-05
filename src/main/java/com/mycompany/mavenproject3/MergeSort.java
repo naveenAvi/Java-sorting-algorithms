@@ -6,12 +6,12 @@ package com.mycompany.mavenproject3;
 
 /**
  *
- * @author navee
+ *
  */
 public class MergeSort {
     public double[] SortTheArray(double[] arr) {
         if (arr.length <= 1) {
-            return arr;
+            return arr; // Base case: arrays of size 1 or less are already sorted
         }
         
         // Split the array into two halves
@@ -34,7 +34,7 @@ public class MergeSort {
         int leftIndex = 0, rightIndex = 0, mergedIndex = 0;
         double[] merged = new double[left.length + right.length];
         
-        // Merge the two arrays into one
+        // Merge elements from both arrays in sorted order
         while (leftIndex < left.length && rightIndex < right.length) {
             if (left[leftIndex] <= right[rightIndex]) {
                 merged[mergedIndex++] = left[leftIndex++];
@@ -43,15 +43,16 @@ public class MergeSort {
             }
         }
         
-        // Copy remaining elements
+        // Copy remaining elements from the left array (if any)
         while (leftIndex < left.length) {
             merged[mergedIndex++] = left[leftIndex++];
         }
         
+        // Copy remaining elements from the right array (if any)
         while (rightIndex < right.length) {
             merged[mergedIndex++] = right[rightIndex++];
         }
-        
-        return merged;
+        return merged; // Return the merged and sorted array
     }
 }
+
