@@ -42,7 +42,7 @@ public class HeapSort {
             largest = left;
         }
 
-        // If right child is larger than largest so far
+        // If right child is larger than largest
         if (right < n && arr[right] > arr[largest]) {
             largest = right;
         }
